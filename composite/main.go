@@ -12,8 +12,11 @@ func main() {
 		fmt.Println(err)
 	}
 	fmt.Println(re.TotalCount)
-	fmt.Println(re.Items[:2])
+	// fmt.Println(re.Items[:2])
 	// jsonMovie()
+	github.Text(re)
+
+	github.HTML(re)
 }
 
 func listTest(li []int) {
