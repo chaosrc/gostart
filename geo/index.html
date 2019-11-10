@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="position"></div>
+    <div id="message"></div>
+    <input id="name" />
+    <button id="submit">submit</button>
+    <script>
+      let nameEle = document.getElementById("name");
+      let buttonEle = document.getElementById("submit");
+      let positionEle = document.getElementById("position");
+      let messageEle = document.getElementById("message");
+
+      buttonEle.addEventListener("click", e => {
+        let value = nameEle.value;
+        submit(value);
+      });
+
+      function submit(data) {
+        fetch("/post", {
+          method: "POST",
+          body: data + "\r\n"
+        })
+          .then(res => {
+            if (res.status === 200) {
+              messageEle.textContent = "success";
+            } else {
+              return Promise.reject(new Error(res.body));
+            }
+          })
+          .catch(err => {
+            messageEle.textContent ="err" +  JSON.stringify(err);
+          });
+      }
+
+      let id = navigator.geolocation.watchPosition(
+        position => {
+          console.log(position);
+          positionEle.textContent = "Position" + JSON.stringify(position);
+        },
+        err => {
+          messageEle.textContent = "err" + JSON.stringify(err);
+        },
+        {
+          enableHighAccuracy: true,
+          maximumAge: 30000,
+          timeout: 27000
+        }
+      );
+
+
+    </script>
+  </body>
+</html>
