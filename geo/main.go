@@ -20,7 +20,7 @@ func init() {
 func main() {
 	http.HandleFunc("/", static)
 	http.HandleFunc("/post", post)
-	log.Fatalln(http.ListenAndServe("localhost:8002", nil))
+	log.Fatalln(http.ListenAndServeTLS(":443", "server.crt", "server.key", nil))
 }
 
 func static(w http.ResponseWriter, r *http.Request) {
