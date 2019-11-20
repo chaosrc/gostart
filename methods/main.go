@@ -21,6 +21,10 @@ type C struct {
 }
 
 func main() {
+	assert()
+}
+
+func server() {
 	db := database{
 		"shoe":  100,
 		"socks": 5,

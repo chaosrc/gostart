@@ -19,7 +19,7 @@ func main() {
 	// m := map[string]string{"www": "qwe"}
 	// a := "www"
 	// fmt.Println(m[a])
-		pipe()
+	buffer()
 }
 
 func routine() {

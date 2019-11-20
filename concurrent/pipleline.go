@@ -4,33 +4,36 @@ import (
 	"fmt"
 )
 
-func pipe() {
+func pipeline() {
 	naturals := make(chan int)
 	squares := make(chan int)
+	
 
 	// Counter
-	go func() {
-		for i := 0; i < 10; i++ {
-			naturals <- i
-		}
-		close(naturals)
-	}()
+	go counter(naturals)
 	// Squarer
-	go func() {
-		for x := range naturals {
-			squares <- x * x
-		}
-		close(squares)
-	}()
-
-	go func() {
-		for x := range naturals {
-			fmt.Println("x:",x)
-		}
-	}()
+	go squarer(naturals, squares)
 
 	// Printer
-	for x := range squares {
+	printer(squares)
+}
+
+func counter(ch chan<- int) {
+	for i := 0; i < 100; i++ {
+		ch <- i
+	}
+	close(ch)
+}
+
+func squarer(in <-chan int, out chan<- int) {
+	for x := range in {
+		out <- x * x
+	}
+	close(out)
+}
+
+func printer(in <-chan int) {
+	for x := range in {
 		fmt.Println(x)
 	}
 }
