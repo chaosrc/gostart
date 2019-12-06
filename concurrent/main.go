@@ -1,25 +1,59 @@
 package main
 
 import (
+	"flag"
 	"fmt"
+	// "sync"
 	"time"
+
+	bytesize "github.com/inhies/go-bytesize"
 )
 
 func main() {
-	// ch := make(chan int,1)
-
+	flag.Parse()
+	roots := flag.Args()
+	if len(roots) == 0 {
+		roots = []string{"."}
+	}
+	for _, path := range roots {
+		size := du2(path)
+		fmt.Printf("%s, %s\n", path, bytesize.New(float64(size)))
+	}
+	
+	// var n sync.WaitGroup
+	// for _, root := range roots {
+	// 	n.Add(1)
+	// 	go du(root, sizeChan, &n)
+	// }
 	// go func() {
-	// 	time.Sleep(time.Second * 3)
-	// 	fmt.Println("done")
-	// 	ch <- 1
+	// 	n.Wait()
+	// 	close(sizeChan)
 	// }()
 
-	// <-ch
+	// var size, nfiles int64
 
-	// m := map[string]string{"www": "qwe"}
-	// a := "www"
-	// fmt.Println(m[a])
-	buffer()
+	// // for s := range sizeChan {
+	// // 	size += s
+	// // 	nfiles++
+	// // }
+	// // fmt.Printf("%d files, %s\n", nfiles, bytesize.New(float64(size)))
+
+	// tick := time.Tick(500 * time.Millisecond)
+
+	// for {
+	// 	select {
+	// 	case <-tick:
+	// 		fmt.Printf("%d files, %s\n", nfiles, bytesize.New(float64(size)))
+
+	// 	case s, ok := <-sizeChan:
+	// 		if !ok {
+	// 			fmt.Printf("%d files, %s\n", nfiles, bytesize.New(float64(size)))
+	// 			return
+	// 		}
+	// 		size += s
+	// 		nfiles++
+	// 	}
+	// }
 }
 
 func routine() {
@@ -27,4 +61,26 @@ func routine() {
 	n := Fib(45)
 
 	fmt.Printf("\rFib(45)=%d\n", n)
+}
+
+func parallel() {
+	url := []string{"https://baidu.com"}
+
+	workList := make(chan []string)
+
+	go func() {
+		workList <- url
+	}()
+
+	seen := make(map[string]bool)
+	for list := range workList {
+		for _, link := range list {
+			if !seen[link] {
+				seen[link] = true
+				go func(link string) {
+					workList <- crawl(link)
+				}(link)
+			}
+		}
+	}
 }
