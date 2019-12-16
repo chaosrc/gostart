@@ -1,40 +1,45 @@
 package word
 
 import (
+	"fmt"
 	"testing"
-	
 )
 
 func TestPalindrome(t *testing.T) {
-	if !IsPalindome("detartrated") {
+	if !IsPalindrome("detartrated") {
 		t.Error(`IsPalindome("detartrated") = false`)
 	}
 
-	if !IsPalindome("kayak") {
+	if !IsPalindrome("kayak") {
 		t.Error(`IsPalindome("kayak") = false`)
 	}
 }
 
 func TestNonPalindrome(t *testing.T) {
-	if IsPalindome("palindrome") {
+	if IsPalindrome("palindrome") {
 		t.Error(`IsPalindome("palindrome") = true`)
 	}
 }
 
 func TestFranchPalindrome(t *testing.T) {
-	if !IsPalindome("été") {
+	if !IsPalindrome("été") {
 		t.Error(`IsPalindome("été") = false`)
 	}
 }
 func TestCanalPalindrome(t *testing.T) {
 	input := "A man, a plan, a canal: Panama"
-	if !IsPalindome(input) {
+	if !IsPalindrome(input) {
 		t.Errorf(`IsPalindome(%q) = false`, input)
 	}
 }
 
 func BenchmarkPalindrome(b *testing.B) {
-	for i := 0; i < b.N ; i++ {
-		IsPalindome("A man, a plan, a cannal: panama")
+	for i := 0; i < b.N; i++ {
+		IsPalindrome("A man, a plan, a canal: Panama")
 	}
+}
+
+func ExampleIsPalindrome() {
+	fmt.Println(IsPalindrome("A man, a plan, a canal: Panama"))
+	// Output: true
 }
