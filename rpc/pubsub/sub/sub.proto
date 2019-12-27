@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package sub;
+
+message String {
+     string Value = 1;
+}
+
+service PubsubService {
+    rpc Publish (String) returns (String);
+    rpc Subsribe (String) returns (stream String);
+}
